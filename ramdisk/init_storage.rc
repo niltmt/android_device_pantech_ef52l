@@ -1,0 +1,31 @@
+on init
+# deleted SW_SYS_SBSeo
+#    export SECONDARY_STORAGE /mnt/external_sd
+    
+    # 120118 LS1-JHM : create mountpoint 
+	# 120321 LS1-Leegyeseong : modification 777 --> 775
+# deleted SW_SYS_SBSeo
+#    mkdir /mnt/external_sd 0775 system system
+    
+    #ifdef FEATURE_SKY_SD_BLOCK_ENCRYPTION jwheo
+# deleted SW_SYS_SBSeo    
+#    mkdir /mnt/external_sd/tmp_mnt 0111 system system
+    
+on post-fs-data
+    mkdir /data/media 0775 media_rw media_rw
+    chown media_rw media_rw /data/media
+    
+    # test
+    #mkdir /mnt/external_sd 0777 system system
+    
+    # If there is no fs-post-data action in the init.<device>.rc file, you
+    # must uncomment this line, otherwise encrypted filesystems
+    # won't work.
+    # Set indication (checked by vold) that we have finished this action
+    setprop vold.post_fs_data_done 1
+
+# create virtual SD card at /mnt/sdcard, based on the /data/media directory
+# daemon will drop to user/group system/media_rw after initializing
+# underlying files in /data/media will be created with user and group media_rw (1023)
+service sdcard /system/bin/sdcard /data/media 1023 1023
+    class late_start
