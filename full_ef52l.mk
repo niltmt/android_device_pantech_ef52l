@@ -26,7 +26,7 @@ $(call inherit-product, device/pantech/ef52l/device.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full.mk)
 
 # Captivate uses high-density artwork where available
-PRODUCT_LOCALES += hdpi
+PRODUCT_LOCALES += xhdpi
 
 # Discard inherited values and use our own instead.
 PRODUCT_NAME := full_ef52l
