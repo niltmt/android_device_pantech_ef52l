@@ -27,6 +27,8 @@
 COMMON_GLOBAL_CFLAGS += -Def52l -DNEED_UMS_ENABLE
 COMMON_GLOBAL_CFLAGS += -DQCOM_ICS_COMPAT
 
+BOARD_VENDOR := pantech
+
 # Init
 TARGET_PROVIDES_INIT_RC := true
 
@@ -35,6 +37,41 @@ TARGET_SPECIFIC_HEADER_PATH := device/pantech/ef52l/include
 
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := MSM8960
+TARGET_NO_BOOTLOADER := true
+
+# CPU
+# Architecture
+TARGET_ARCH := arm
+TARGET_ARCH_VARIANT := armv7-a-neon
+TARGET_ARCH_VARIANT_CPU := cortex-a9
+TARGET_CPU_ABI := armeabi-v7a
+TARGET_CPU_ABI2 := armeabi
+TARGET_CPU_SMP := true
+TARGET_CPU_VARIANT := krait
+TARGET_USE_KRAIT_BIONIC_OPTIMIZATION := true
+
+# Graphics
+USE_OPENGL_RENDERER := true
+TARGET_DISPLAY_USE_RETIRE_FENCE := true
+TARGET_USES_C2D_COMPOSITION := true
+TARGET_USES_ION := true
+BOARD_EGL_CFG := device/pantech/ef52l/configs/egl.cfg
+
+# QCOM hardware
+BOARD_USES_QCOM_HARDWARE := true
+TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
+TARGET_QCOM_AUDIO_VARIANT := caf
+TARGET_QCOM_DISPLAY_VARIANT := caf
+TARGET_QCOM_MEDIA_VARIANT := caf
+TARGET_USES_QCOM_BSP := true
+
+# Audio
+BOARD_USES_ALSA_AUDIO := true
+BOARD_USES_LEGACY_ALSA_AUDIO := true
+TARGET_USES_QCOM_COMPRESSED_AUDIO := true
+
+# Power
+TARGET_USES_CM_POWERHAL := true
 
 # Bluetooth
 TARGET_CUSTOM_BLUEDROID := ../../../device/pantech/ef52l/bluetooth/bluetooth.c
@@ -91,6 +128,8 @@ BOARD_SYSTEMIMAGE_PARTITION_SIZE := 1782579200
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 27577531392
 BOARD_FLASH_BLOCK_SIZE := 131072
 BOARD_VOLD_MAX_PARTITIONS := 26
+TARGET_RECOVERY_FSTAB := device/pantech/ef52l/fstab.ef52l
+RECOVERY_FSTAB_VERSION := 2
 
 # Recovery
 BOARD_CUSTOM_RECOVERY_KEYMAPPING := ../../device/pantech/ef52l/recovery/recovery_keys.c
@@ -101,12 +140,29 @@ BOARD_SUPPRESS_EMMC_WIPE := true
 # Recovery Graphics fix
 RECOVERY_GRAPHICS_USE_LINELENGTH := true
 
-# CPU
-TARGET_CPU_ABI := armeabi-v7a
-TARGET_CPU_ABI2 := armeabi
-TARGET_ARCH := arm
-TARGET_ARCH_VARIANT := armv7-a-neon
-# ef52l CPU Architecture is Krait 300
-TARGET_CPU_VARIANT := krait
-BOARD_EGL_CFG := device/pantech/ef52l/configs/egl.cfg
+BOARD_SEPOLICY_UNION += \
+    app.te \
+    bluetooth.te \
+    device.te \
+    domain.te \
+    drmserver.te \
+    file_contexts \
+    file.te \
+    hci_init.te \
+    healthd.te \
+    init_shell.te \
+    init.te \
+    keystore.te \
+    kickstart.te \
+    mediaserver.te \
+    rild.te \
+    surfaceflinger.te \
+    system.te \
+    ueventd.te \
+    wpa_socket.te \
+    wpa.te
+
+# Webkit
+ENABLE_WEBGL := true
+TARGET_FORCE_CPU_UPLOAD := true
 
