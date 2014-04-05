@@ -25,8 +25,7 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-#import init.qcom.usb.rc
-import init.target.rc
+import init.pantech.usb.rc
 
 on init
     # Set permissions for persist partition
@@ -52,6 +51,8 @@ on early-init
     mkdir /storage/sdcard1 0000 system system
     symlink /storage/sdcard1 /external_sd
     symlink /storage/sdcard1 /mnt/external_sd
+    mount debugfs /sys/kernel/debug /sys/kernel/debug
+    chown system system /sys/kernel/debug/kgsl/proc
 
 on boot
     chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
@@ -143,6 +144,9 @@ on boot
     # connections on high-throughput links get dropped when
     # an ack packet comes out of order
     write /proc/sys/net/netfilter/nf_conntrack_tcp_be_liberal 1
+
+on fs
+	mount_all fstab.ef52l
 
 # import cne init file
 on post-fs
@@ -514,6 +518,22 @@ service qcom-sh /system/bin/sh /init.qcom.sh
     user root
     oneshot
 
+# FUSE
+service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emulated
+    class late_start
+
+service fuse_usbdisk /system/bin/sdcard -u 1023 -g 1023 -d /mnt/media_rw/usbdisk /storage/usbdisk
+    class late_start
+    disabled
+
+service netmgrd /system/bin/netmgrd
+    class core
+# End FUSE
+
+service mpdecision /system/bin/mpdecision --no_sleep --avg_comp
+    class main
+    user root
+
 service qcom-post-boot /system/bin/sh /system/etc/init.qcom.post_boot.sh
     class late_start
     user root
@@ -537,7 +557,6 @@ service wifi-crda /system/bin/sh /system/etc/init.crda.sh
    user root
    disabled
    oneshot
-
 
 on property:sys.boot_completed=1
     start qcom-post-boot
@@ -591,6 +610,22 @@ service battery_monitor /system/bin/battery_monitor
     user system
     group system
     disabled
+
+service thermald /system/bin/thermald
+    class main
+    user root
+    group root
+    disabled
+
+service qcamerasvr /system/bin/mm-qcamera-daemon
+    class late_start
+    user camera
+    group camera system inet graphics
+
+service qmuxd /system/bin/qmuxd
+    class core
+    user radio
+    group radio audio gps
 
 service ril-daemon1 /system/bin/rild -c 1
     class main
