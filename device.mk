@@ -44,11 +44,11 @@ PRODUCT_COPY_FILES += \
     device/pantech/ef52l/ramdisk/init.usb.rc:root/init.usb.rc \
     device/pantech/ef52l/ramdisk/init.qcom.rc:root/init.qcom.rc \
     device/pantech/ef52l/ramdisk/init.target.rc:root/init.target.rc \
-    device/pantech/ef52l/ramdisk/init.qcom.usb.rc:root/init.qcom.usb.rc \
+    device/pantech/ef52l/fstab.ef52l:root/fstab.ef52l \
     device/pantech/ef52l/ramdisk/init.pantech.usb.rc:root/init.pantech.usb.rc \
     device/pantech/ef52l/ramdisk/init.trace.rc:root/init.trace.rc \
     device/pantech/ef52l/ramdisk/ueventd.rc:root/ueventd.rc \
-device/pantech/ef52l/ramdisk/ueventd.qcom.rc:root/ueventd.qcom.rc \
+    device/pantech/ef52l/ramdisk/ueventd.qcom.rc:root/ueventd.qcom.rc \
     device/pantech/ef52l/ramdisk/initlogo.rle:root/initlogo.rle \
     device/pantech/ef52l/ramdisk/poweroff_in.rle:root/poweroff_in.rle
 
